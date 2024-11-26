@@ -1,0 +1,61 @@
+{
+  "users": [
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "Admin",
+      "status": "Active",
+      "id": "1"
+    },
+    {
+      "id": "e0bc",
+      "name": "Manan",
+      "email": "Manan@gmail.com",
+      "role": "Editor",
+      "status": "Active"
+    },
+    {
+      "id": "af91",
+      "name": "Ria",
+      "email": "ria@gmail.com",
+      "role": "Editor",
+      "status": "Inactive"
+    }
+  ],
+  "roles": [
+    {
+      "name": "Admin",
+      "permissions": [
+        "View",
+        "Edit",
+        "Delete"
+      ],
+      "id": "0750"
+    },
+    {
+      "id": "3008",
+      "name": "Editor",
+      "permissions": [
+        "View",
+        "Edit"
+      ]
+    }
+  ],
+  "permissions": [
+    {
+      "id": "1",
+      "name": "View",
+      "description": "Can view the list of users"
+    },
+    {
+      "id": "2",
+      "name": "Edit",
+      "description": "Can edit roles"
+    },
+    {
+      "name": "Delete",
+      "description": "Delete users",
+      "id": "e165"
+    }
+  ]
+}
