@@ -7,16 +7,16 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold">RBAC Dashboard</h1>
         <div className="flex space-x-4">
-          <Link to="/" className="hover:underline">
+          <Link to="/" className="">
             Dashboard
           </Link>
-          <Link to="/users" className="hover:underline">
+          <Link to="/users" className="">
             Users
           </Link>
-          <Link to="/roles" className="hover:underline">
+          <Link to="/roles" className="">
             Roles
           </Link>
-          <Link to="/permissions" className="hover:underline">
+          <Link to="/permissions" className="">
             Permissions
           </Link>
         </div>
