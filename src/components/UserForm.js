@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+const baseUrl = process.env.REACT_APP_API_URL;
 
 const UserForm = ({ user, onSubmit }) => {
   const [name, setName] = useState(user ? user.name : '');
@@ -10,7 +11,7 @@ const UserForm = ({ user, onSubmit }) => {
 
   useEffect(() => {
     axios
-      .get("https://rbac-vrv-security-backend-arfh.onrender.com/roles") // Replace with your roles endpoint
+      .get(`${baseUrl}/roles`) // Replace with your roles endpoint
       .then((response) => setRoles(response.data))
       .catch((error) => console.error("Error fetching roles", error));
   }, []);
@@ -22,10 +23,10 @@ const UserForm = ({ user, onSubmit }) => {
     try {
       if (user) {
         // Edit user
-        await axios.put(`https://rbac-vrv-security-backend-arfh.onrender.com/users/${user.id}`, newUser);
+        await axios.put(`${baseUrl}/users/${user.id}`, newUser);
       } else {
         // Add new user
-        await axios.post('https://rbac-vrv-security-backend-arfh.onrender.com/users', newUser);
+        await axios.post(`${baseUrl}/users`, newUser);
       }
       onSubmit(); // Refresh the users list after submit
     } catch (error) {

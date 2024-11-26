@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import RoleForm from "../components/RoleForm";
+const baseUrl = process.env.REACT_APP_API_URL;
+
 
 const RoleManagement = () => {
   const [roles, setRoles] = useState([]);
@@ -9,15 +11,14 @@ const RoleManagement = () => {
   const [editingRole, setEditingRole] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUsing, setSearchUsing] = useState("name"); 
-
   useEffect(() => {
     // Fetch roles
-    axios.get("https://rbac-vrv-security-backend-arfh.onrender.com/roles")
+    axios.get(`${baseUrl}/roles`)
       .then((response) => setRoles(response.data))
       .catch((error) => console.error("Error fetching roles", error));
 
     // Fetch available permissions
-    axios.get("https://rbac-vrv-security-backend-arfh.onrender.com/permissions")
+    axios.get(`${baseUrl}/permissions`)
       .then((response) => setAvailablePermissions(response.data.map((p) => p.name)))
       .catch((error) => console.error("Error fetching permissions", error));
   }, []);
@@ -34,12 +35,12 @@ const RoleManagement = () => {
 
   const handleDeleteRole = async (e) => {
     try {
-        const response = await axios.get(`https://rbac-vrv-security-backend-arfh.onrender.com/users?role=${e.name}`);
+        const response = await axios.get(`${baseUrl}/users?role=${e.name}`);
         if (response.data.length > 0) {
           alert(`Cannot delete this role as ${response.data.length} user(s) are associated with it.`);
           return;
         }
-        await axios.delete(`https://rbac-vrv-security-backend-arfh.onrender.com/roles/${e.id}`);
+        await axios.delete(`${baseUrl}/roles/${e.id}`);
         setRoles(roles.filter((role) => role.id !== e.id));
       } catch (error) {
         console.error("Error checking or deleting role", error);
@@ -68,7 +69,7 @@ const RoleManagement = () => {
     if (editingRole) {
       // Update existing role
       axios
-        .put(`https://rbac-vrv-security-backend-arfh.onrender.com/roles/${editingRole.id}`, newRole)
+        .put(`${baseUrl}/roles/${editingRole.id}`, newRole)
         .then(() => {
           setRoles((prevRoles) =>
             prevRoles.map((role) =>
@@ -80,7 +81,7 @@ const RoleManagement = () => {
     } else {
       // Add new role
       axios
-        .post("https://rbac-vrv-security-backend-arfh.onrender.com/roles", newRole)
+        .post(`${baseUrl}/roles`, newRole)
         .then((response) => setRoles([...roles, response.data]))
         .catch((error) => console.error("Error adding role", error));
     }

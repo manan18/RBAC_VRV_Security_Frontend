@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PermissionForm
  from "../components/PermissionForm.js";
+ const baseUrl = process.env.REACT_APP_API_URL;
+ 
 const PermissionManagement = () => {
   const [permissions, setPermissions] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingPermission, setEditingPermission] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUsing, setSearchUsing] =useState("name");
-
   // Fetch Permissions from Backend
   useEffect(() => {
     axios
-      .get("https://rbac-vrv-security-backend-arfh.onrender.com/permissions")
+      .get(`${baseUrl}/permissions`)
       .then((response) => setPermissions(response.data))
       .catch((error) => console.error("Error fetching permissions:", error));
   }, []);
@@ -33,7 +34,7 @@ const PermissionManagement = () => {
   const handleDeletePermission = (e) => {
     // Fetch roles to check if any are using the permission
     axios
-      .get(`https://rbac-vrv-security-backend-arfh.onrender.com/roles`)
+      .get(`${baseUrl}/roles`)
       .then((response) => {
         const rolesUsingPermission = response.data.filter((role) =>
           role.permissions.includes(e.name)
@@ -48,7 +49,7 @@ const PermissionManagement = () => {
         } else {
           // Proceed to delete if no roles are using it
           axios
-            .delete(`https://rbac-vrv-security-backend-arfh.onrender.com/permissions/${e.id}`)
+            .delete(`${baseUrl}/permissions/${e.id}`)
             .then(() => {
               setPermissions((prevPermissions) =>
                 prevPermissions.filter((perm) => perm.id !== e.id)
@@ -64,7 +65,7 @@ const PermissionManagement = () => {
     if (editingPermission) {
       // Update permission
       axios
-        .put(`https://rbac-vrv-security-backend-arfh.onrender.com/permissions/${editingPermission.id}`, newPermission)
+        .put(`${baseUrl}/permissions/${editingPermission.id}`, newPermission)
         .then(() => {
           setPermissions((prevPermissions) =>
             prevPermissions.map((perm) =>
@@ -77,7 +78,7 @@ const PermissionManagement = () => {
     } else {
       // Add new permission
       axios
-        .post("https://rbac-vrv-security-backend-arfh.onrender.com/permissions", newPermission)
+        .post(`${baseUrl}/permissions`, newPermission)
         .then((response) => {
           setPermissions([...permissions, response.data]);
           setOpenDialog(false);

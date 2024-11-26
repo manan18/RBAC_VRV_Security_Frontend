@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-
+const baseUrl = process.env.REACT_APP_API_URL;
 
 
 const Dashboard = () => {
@@ -18,7 +17,7 @@ const Dashboard = () => {
     const fetchDashboardData = async () => {
       try {
         // Fetch users data from /users endpoint
-        const response = await axios.get('https://rbac-vrv-security-backend-arfh.onrender.com/users');
+        const response = await axios.get(`${baseUrl}/users`);
         const users = response.data;
 
         // Get user count

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import UserForm from "../components/UserForm";
+const baseUrl = process.env.REACT_APP_API_URL;
+
 
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
@@ -10,7 +12,7 @@ const UserManagement = () => {
     const [searchUsing, setSearchUsing] =useState("name");
   useEffect(() => {
     axios
-      .get("https://rbac-vrv-security-backend-arfh.onrender.com/users")
+      .get(`${baseUrl}/users`)
       .then((response) => setUsers(response.data))
       .catch((error) => console.error("Error fetching users", error));
   }, []);
@@ -27,7 +29,7 @@ const UserManagement = () => {
 
   const handleDeleteUser = (id) => {
     axios
-      .delete(`https://rbac-vrv-security-backend-arfh.onrender.com/users/${id}`)
+      .delete(`${baseUrl}/users/${id}`)
       .then(() => {
         setUsers(users.filter((user) => user.id !== id));
       })
@@ -48,7 +50,7 @@ const UserManagement = () => {
 
   const handleFormSubmit = () => {
     setOpenDialog(false);
-    axios.get("https://rbac-vrv-security-backend-arfh.onrender.com/users").then((response) => setUsers(response.data));
+    axios.get(`${baseUrl}/users`).then((response) => setUsers(response.data));
   };
 
   return (
