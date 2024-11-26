@@ -12,7 +12,7 @@ const PermissionManagement = () => {
   // Fetch Permissions from Backend
   useEffect(() => {
     axios
-      .get("http://localhost:3001/permissions")
+      .get("https://rbac-vrv-security-backend-arfh.onrender.com/permissions")
       .then((response) => setPermissions(response.data))
       .catch((error) => console.error("Error fetching permissions:", error));
   }, []);
@@ -33,7 +33,7 @@ const PermissionManagement = () => {
   const handleDeletePermission = (e) => {
     // Fetch roles to check if any are using the permission
     axios
-      .get(`http://localhost:3001/roles`)
+      .get(`https://rbac-vrv-security-backend-arfh.onrender.com/roles`)
       .then((response) => {
         const rolesUsingPermission = response.data.filter((role) =>
           role.permissions.includes(e.name)
@@ -48,7 +48,7 @@ const PermissionManagement = () => {
         } else {
           // Proceed to delete if no roles are using it
           axios
-            .delete(`http://localhost:3001/permissions/${e.id}`)
+            .delete(`https://rbac-vrv-security-backend-arfh.onrender.com/permissions/${e.id}`)
             .then(() => {
               setPermissions((prevPermissions) =>
                 prevPermissions.filter((perm) => perm.id !== e.id)
@@ -64,7 +64,7 @@ const PermissionManagement = () => {
     if (editingPermission) {
       // Update permission
       axios
-        .put(`http://localhost:3001/permissions/${editingPermission.id}`, newPermission)
+        .put(`https://rbac-vrv-security-backend-arfh.onrender.com/permissions/${editingPermission.id}`, newPermission)
         .then(() => {
           setPermissions((prevPermissions) =>
             prevPermissions.map((perm) =>
@@ -77,7 +77,7 @@ const PermissionManagement = () => {
     } else {
       // Add new permission
       axios
-        .post("http://localhost:3001/permissions", newPermission)
+        .post("https://rbac-vrv-security-backend-arfh.onrender.com/permissions", newPermission)
         .then((response) => {
           setPermissions([...permissions, response.data]);
           setOpenDialog(false);

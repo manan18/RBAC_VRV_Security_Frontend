@@ -10,7 +10,7 @@ const UserForm = ({ user, onSubmit }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/roles") // Replace with your roles endpoint
+      .get("https://rbac-vrv-security-backend-arfh.onrender.com/roles") // Replace with your roles endpoint
       .then((response) => setRoles(response.data))
       .catch((error) => console.error("Error fetching roles", error));
   }, []);
@@ -22,10 +22,10 @@ const UserForm = ({ user, onSubmit }) => {
     try {
       if (user) {
         // Edit user
-        await axios.put(`http://localhost:3001/users/${user.id}`, newUser);
+        await axios.put(`https://rbac-vrv-security-backend-arfh.onrender.com/users/${user.id}`, newUser);
       } else {
         // Add new user
-        await axios.post('http://localhost:3001/users', newUser);
+        await axios.post('https://rbac-vrv-security-backend-arfh.onrender.com/users', newUser);
       }
       onSubmit(); // Refresh the users list after submit
     } catch (error) {

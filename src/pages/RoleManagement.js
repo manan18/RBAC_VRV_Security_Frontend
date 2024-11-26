@@ -12,12 +12,12 @@ const RoleManagement = () => {
 
   useEffect(() => {
     // Fetch roles
-    axios.get("http://localhost:3001/roles")
+    axios.get("https://rbac-vrv-security-backend-arfh.onrender.com/roles")
       .then((response) => setRoles(response.data))
       .catch((error) => console.error("Error fetching roles", error));
 
     // Fetch available permissions
-    axios.get("http://localhost:3001/permissions")
+    axios.get("https://rbac-vrv-security-backend-arfh.onrender.com/permissions")
       .then((response) => setAvailablePermissions(response.data.map((p) => p.name)))
       .catch((error) => console.error("Error fetching permissions", error));
   }, []);
@@ -34,12 +34,12 @@ const RoleManagement = () => {
 
   const handleDeleteRole = async (e) => {
     try {
-        const response = await axios.get(`http://localhost:3001/users?role=${e.name}`);
+        const response = await axios.get(`https://rbac-vrv-security-backend-arfh.onrender.com/users?role=${e.name}`);
         if (response.data.length > 0) {
           alert(`Cannot delete this role as ${response.data.length} user(s) are associated with it.`);
           return;
         }
-        await axios.delete(`http://localhost:3001/roles/${e.id}`);
+        await axios.delete(`https://rbac-vrv-security-backend-arfh.onrender.com/roles/${e.id}`);
         setRoles(roles.filter((role) => role.id !== e.id));
       } catch (error) {
         console.error("Error checking or deleting role", error);
@@ -68,7 +68,7 @@ const RoleManagement = () => {
     if (editingRole) {
       // Update existing role
       axios
-        .put(`http://localhost:3001/roles/${editingRole.id}`, newRole)
+        .put(`https://rbac-vrv-security-backend-arfh.onrender.com/roles/${editingRole.id}`, newRole)
         .then(() => {
           setRoles((prevRoles) =>
             prevRoles.map((role) =>
@@ -80,7 +80,7 @@ const RoleManagement = () => {
     } else {
       // Add new role
       axios
-        .post("http://localhost:3001/roles", newRole)
+        .post("https://rbac-vrv-security-backend-arfh.onrender.com/roles", newRole)
         .then((response) => setRoles([...roles, response.data]))
         .catch((error) => console.error("Error adding role", error));
     }

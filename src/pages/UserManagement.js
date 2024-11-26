@@ -10,7 +10,7 @@ const UserManagement = () => {
     const [searchUsing, setSearchUsing] =useState("name");
   useEffect(() => {
     axios
-      .get("http://localhost:3001/users")
+      .get("https://rbac-vrv-security-backend-arfh.onrender.com/users")
       .then((response) => setUsers(response.data))
       .catch((error) => console.error("Error fetching users", error));
   }, []);
@@ -27,7 +27,7 @@ const UserManagement = () => {
 
   const handleDeleteUser = (id) => {
     axios
-      .delete(`http://localhost:3001/users/${id}`)
+      .delete(`https://rbac-vrv-security-backend-arfh.onrender.com/users/${id}`)
       .then(() => {
         setUsers(users.filter((user) => user.id !== id));
       })
@@ -48,7 +48,7 @@ const UserManagement = () => {
 
   const handleFormSubmit = () => {
     setOpenDialog(false);
-    axios.get("http://localhost:3001/users").then((response) => setUsers(response.data));
+    axios.get("https://rbac-vrv-security-backend-arfh.onrender.com/users").then((response) => setUsers(response.data));
   };
 
   return (

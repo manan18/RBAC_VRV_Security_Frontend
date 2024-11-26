@@ -18,7 +18,7 @@ const Dashboard = () => {
     const fetchDashboardData = async () => {
       try {
         // Fetch users data from /users endpoint
-        const response = await axios.get('http://localhost:3001/users');
+        const response = await axios.get('https://rbac-vrv-security-backend-arfh.onrender.com/users');
         const users = response.data;
 
         // Get user count
