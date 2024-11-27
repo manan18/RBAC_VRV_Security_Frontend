@@ -16,14 +16,12 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        // Fetch users data from /users endpoint
+       
         const response = await axios.get(`${baseUrl}/users`);
         const users = response.data;
 
-        // Get user count
         const totalUsers = users.length;
-
-        // Get active and inactive users count
+        
         const activeUsersCount = users.filter(user => user.status === 'Active').length;
         const inactiveUsersCount = users.filter(user => user.status === 'Inactive').length;
 
@@ -49,7 +47,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="p-6 w-full">
       <h2 className="text-2xl font-bold mb-6">Dashboard Overview</h2>
       <div className="grid grid-cols-3 gap-6">
         <div className="bg-blue-100 p-4 rounded-lg shadow">

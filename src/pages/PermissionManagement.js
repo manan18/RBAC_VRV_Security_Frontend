@@ -10,7 +10,7 @@ const PermissionManagement = () => {
   const [editingPermission, setEditingPermission] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUsing, setSearchUsing] =useState("name");
-  // Fetch Permissions from Backend
+
   useEffect(() => {
     axios
       .get(`${baseUrl}/permissions`)
@@ -18,21 +18,21 @@ const PermissionManagement = () => {
       .catch((error) => console.error("Error fetching permissions:", error));
   }, []);
 
-  // Handle Add Permission
   const handleAddPermission = () => {
     setEditingPermission(null);
     setOpenDialog(true);
   };
 
-  // Handle Edit Permission
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   const handleEditPermission = (permission) => {
     setEditingPermission(permission);
     setOpenDialog(true);
   };
 
-  // Handle Delete Permission
   const handleDeletePermission = (e) => {
-    // Fetch roles to check if any are using the permission
     axios
       .get(`${baseUrl}/roles`)
       .then((response) => {
@@ -41,13 +41,11 @@ const PermissionManagement = () => {
         );
   
         if (rolesUsingPermission.length > 0) {
-          // Alert the user if the permission is in use
           const roleNames = rolesUsingPermission.map((role) => role.name).join(", ");
           alert(
             `Cannot delete this permission. It is being used by the following roles: ${roleNames}.`
           );
         } else {
-          // Proceed to delete if no roles are using it
           axios
             .delete(`${baseUrl}/permissions/${e.id}`)
             .then(() => {
@@ -63,7 +61,6 @@ const PermissionManagement = () => {
 
   const handleFormSubmit = (newPermission) => {
     if (editingPermission) {
-      // Update permission
       axios
         .put(`${baseUrl}/permissions/${editingPermission.id}`, newPermission)
         .then(() => {
@@ -76,7 +73,6 @@ const PermissionManagement = () => {
         })
         .catch((error) => console.error("Error updating permission", error));
     } else {
-      // Add new permission
       axios
         .post(`${baseUrl}/permissions`, newPermission)
         .then((response) => {
@@ -92,15 +88,15 @@ const PermissionManagement = () => {
   );
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="p-6 w-full">
       <h2 className="text-2xl font-bold mb-4">Permission Management</h2>
 
-      <div className="flex gap-4 content-center py-2 mb-4">
+      <div className="md:flex md:gap-4 md:content-center md:py-2 md:mb-1 grid gap-4 grid-cols-3 py-2 mb-4">
         <input
           type="text"
           placeholder="Search Permissions by selecting field in the adjacent dropdown..."
           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-indigo-300"
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={handleSearchChange}
         />
         <select
             id="permissions"
@@ -125,37 +121,50 @@ const PermissionManagement = () => {
         </button>
       </div>
 
-      <table className="min-w-full bg-white rounded-lg overflow-hidden shadow">
-        <thead>
-          <tr className="bg-gray-800 text-white text-left">
-            <th className="py-2 px-4">Permission Name</th>
-            <th className="py-2 px-4">Description</th>
-            <th className="py-2 px-4">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPermissions.map((permission) => (
-            <tr key={permission.id} className="border-t hover:bg-gray-100">
-              <td className="py-2 px-4">{permission.name}</td>
-              <td className="py-2 px-4">{permission.description}</td>
-              <td className="py-2 px-4 space-x-2">
-                <button
-                  onClick={() => handleEditPermission(permission)}
-                  className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeletePermission(permission)}
-                  className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="grid gap-4">
+  {/* Header (Hidden on small screens) */}
+  <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg hidden sm:grid">
+    <div>Permission Name</div>
+    <div>Description</div>
+    <div>Actions</div>
+  </div>
+
+  {/* User Items */}
+  {filteredPermissions.map((permission) => (
+    <div
+      key={permission.id}
+      className="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-white rounded-lg shadow p-4 hover:bg-gray-100"
+    >
+      {/* Name */}
+      <div className="sm:col-span-1">
+        <div className="block sm:hidden font-medium text-gray-800">Role Name:</div>
+        <div className="text-gray-800">{permission.name}</div>
+      </div>
+
+      {/* Permission */}
+      <div className="sm:col-span-1">
+        <div className="block sm:hidden font-medium text-gray-800">Role Permissions:</div>
+        <div className="text-sm text-gray-600">{permission.description}</div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-2 justify-start sm:col-span-1">
+        <button
+          onClick={() => handleEditPermission(permission)}
+          className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => handleDeletePermission(permission)}
+          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
 
       {openDialog && (
         <PermissionForm

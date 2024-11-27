@@ -11,7 +11,7 @@ const UserForm = ({ user, onSubmit }) => {
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}/roles`) // Replace with your roles endpoint
+      .get(`${baseUrl}/roles`) 
       .then((response) => setRoles(response.data))
       .catch((error) => console.error("Error fetching roles", error));
   }, []);
@@ -28,7 +28,7 @@ const UserForm = ({ user, onSubmit }) => {
         // Add new user
         await axios.post(`${baseUrl}/users`, newUser);
       }
-      onSubmit(); // Refresh the users list after submit
+      onSubmit(); 
     } catch (error) {
       console.error('Error submitting user form', error);
     }

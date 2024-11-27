@@ -12,12 +12,11 @@ const RoleManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchUsing, setSearchUsing] = useState("name"); 
   useEffect(() => {
-    // Fetch roles
     axios.get(`${baseUrl}/roles`)
       .then((response) => setRoles(response.data))
       .catch((error) => console.error("Error fetching roles", error));
 
-    // Fetch available permissions
+
     axios.get(`${baseUrl}/permissions`)
       .then((response) => setAvailablePermissions(response.data.map((p) => p.name)))
       .catch((error) => console.error("Error fetching permissions", error));
@@ -67,7 +66,7 @@ const RoleManagement = () => {
 
   const handleFormSubmit = (newRole) => {
     if (editingRole) {
-      // Update existing role
+      
       axios
         .put(`${baseUrl}/roles/${editingRole.id}`, newRole)
         .then(() => {
@@ -79,7 +78,7 @@ const RoleManagement = () => {
         })
         .catch((error) => console.error("Error updating role", error));
     } else {
-      // Add new role
+    
       axios
         .post(`${baseUrl}/roles`, newRole)
         .then((response) => setRoles([...roles, response.data]))
@@ -89,9 +88,9 @@ const RoleManagement = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="p-6 w-full">
       <h2 className="text-2xl font-bold mb-4">Role Management</h2>
-      <div className="flex gap-4 content-center py-2 mb-1">
+      <div className="md:flex md:gap-4 md:content-center md:py-2 md:mb-1 grid gap-4 grid-cols-3 py-2 mb-4">
         <input
           type="text"
           placeholder="Search Roles by selecting field in the adjacent dropdown..."
@@ -120,37 +119,50 @@ const RoleManagement = () => {
           Add Role
         </button>
       </div>
-      <table className="min-w-full bg-white rounded-lg overflow-hidden shadow">
-        <thead>
-          <tr className="bg-gray-800 text-white text-left">
-            <th className="py-2 px-4">Role Name</th>
-            <th className="py-2 px-4">Permissions</th>
-            <th className="py-2 px-4">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredRoles.map((role) => (
-            <tr key={role.id} className="border-t hover:bg-gray-100">
-              <td className="py-2 px-4">{role.name}</td>
-              <td className="py-2 px-4">{role.permissions.join(", ")}</td>
-              <td className="py-2 px-4 space-x-2">
-                <button
-                  onClick={() => handleEditRole(role)}
-                  className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteRole(role)}
-                  className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="grid gap-4">
+  {/* Header (Hidden on small screens) */}
+  <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg hidden sm:grid">
+    <div>Role Name</div>
+    <div>Permissions</div>
+    <div>Actions</div>
+  </div>
+
+  {/* User Items */}
+  {filteredRoles.map((role) => (
+    <div
+      key={role.id}
+      className="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-white rounded-lg shadow p-4 hover:bg-gray-100"
+    >
+      {/* Name */}
+      <div className="sm:col-span-1">
+        <div className="block sm:hidden font-medium text-gray-800">Role Name:</div>
+        <div className="text-gray-800">{role.name}</div>
+      </div>
+
+      {/* Permission */}
+      <div className="sm:col-span-1">
+        <div className="block sm:hidden font-medium text-gray-800">Role Permissions:</div>
+        <div className="text-sm text-gray-600">{role.permissions.join(", ")}</div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-2 justify-start sm:col-span-1">
+        <button
+          onClick={() => handleEditRole(role)}
+          className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => handleDeleteRole(role)}
+          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
 
       {openDialog && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
