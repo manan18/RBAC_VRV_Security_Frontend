@@ -121,7 +121,7 @@ const RoleManagement = () => {
       </div>
       <div className="grid gap-4">
   {/* Header (Hidden on small screens) */}
-  <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg hidden sm:grid">
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg hidden sm:grid">
     <div>Role Name</div>
     <div>Permissions</div>
     <div>Actions</div>
@@ -131,7 +131,7 @@ const RoleManagement = () => {
   {filteredRoles.map((role) => (
     <div
       key={role.id}
-      className="grid grid-cols-1 sm:grid-cols-5 gap-4 bg-white rounded-lg shadow p-4 hover:bg-gray-100"
+      className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white rounded-lg shadow p-4 hover:bg-gray-100"
     >
       {/* Name */}
       <div className="sm:col-span-1">
